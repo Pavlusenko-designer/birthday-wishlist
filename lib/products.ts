@@ -1,4 +1,4 @@
-export type Product={id:string;name:string;subtitle:string;category:"things"|"gaiwan"|"tea"|"music"|"games";price:number|null;url:string;image:string;stock?:string};
+export type Product={id:string;name:string;subtitle:string;category:"things"|"gaiwan"|"tea"|"music"|"games";price:number|null;url:string;image:string;stock?:string;note?:string;availabilityNote?:string};
 export const onePerGroup=true;
 export const products:Product[]=[
   {
@@ -144,6 +144,35 @@ export const products:Product[]=[
   "price": 828,
   "url": "https://workplaceshop.com.ua/velykyj-kylymok-dlya-myshi-game-wow/?attribute_pa_rozmir=400x900mm",
   "image": "/products/mousemat.webp"
+},
+{
+  "id": "sennheiser-mx375",
+  "name": "Sennheiser MX 375 Black",
+  "subtitle": "УЛЮБЛЕНІ ВКЛАДИШІ",
+  "category": "music",
+  "price": 649,
+  "url": "https://mta.ua/drotovi-navushnuki/66829-navushnyky-vkladyshi-providni-bez-mikrofona-sennheiser-mx-375-black",
+  "image": "/products/sennheiser-mx375.jpg",
+  "note": "Найкращі навушники для мене — користувався цією моделлю майже 8 років."
+},
+{
+  "id": "tea-scales",
+  "name": "Чайні терези-чахе 2 в 1",
+  "subtitle": "ДЛЯ ЧАЙНИХ РИТУАЛІВ",
+  "category": "gaiwan",
+  "price": 690,
+  "url": "https://prom.ua/ua/p3153910835-chajnye-vesy-chahoe.html",
+  "image": "/products/tea-scales.jpg",
+  "availabilityNote": "Передзамовлення. Відправка з 08.10.2026 — після дня народження."
+},
+{
+  "id": "kharkiv-lamp",
+  "name": "Нічник «Kharkiv Urban»",
+  "subtitle": "ПАНОРАМА ХАРКОВА · ЛАКОВАНЕ ДЕРЕВО",
+  "category": "things",
+  "price": 1390,
+  "url": "https://kotofaktura.com.ua/ua/p3147680393-nochnik-panorama-kharkiv.html",
+  "image": "/products/kharkiv-lamp.jpg"
 }
 ];
-export const groupKey=(p:Product)=>onePerGroup&&(p.category==="gaiwan"||p.category==="tea")?p.category:p.id;
+export const groupKey=(p:Product)=>onePerGroup&&((p.category==="gaiwan"&&p.id.startsWith("gaiwan-"))||p.category==="tea")?p.category:p.id;
