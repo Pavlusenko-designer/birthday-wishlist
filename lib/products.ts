@@ -1,4 +1,4 @@
-export type Product={id:string;name:string;subtitle:string;category:"things"|"gaiwan"|"tea"|"music";price:number|null;url:string;image:string;stock?:string};
+export type Product={id:string;name:string;subtitle:string;category:"things"|"gaiwan"|"tea"|"music"|"games";price:number|null;url:string;image:string;stock?:string};
 export const onePerGroup=true;
 export const products:Product[]=[
   {
@@ -126,6 +126,24 @@ export const products:Product[]=[
     "price": 2599,
     "url": "https://www.muziker.ua/audio-technica-ath-m20x",
     "image": "/products/headphones.jpg"
-  }
+  } ,
+{
+  "id": "sanatorium",
+  "name": "Настільний квест «Sanatorium»",
+  "subtitle": "ДЕТЕКТИВНИЙ КВЕСТ · 1–6 ГРАВЦІВ",
+  "category": "games",
+  "price": 949,
+  "url": "https://manuscript.co.ua/sanatorium-1/",
+  "image": "/products/sanatorium.png"
+},
+{
+  "id": "mousemat",
+  "name": "Ігровий килимок Game WoW",
+  "subtitle": "РОЗМІР 400 × 900 ММ",
+  "category": "games",
+  "price": 828,
+  "url": "https://workplaceshop.com.ua/velykyj-kylymok-dlya-myshi-game-wow/?attribute_pa_rozmir=400x900mm",
+  "image": "/products/mousemat.webp"
+}
 ];
 export const groupKey=(p:Product)=>onePerGroup&&(p.category==="gaiwan"||p.category==="tea")?p.category:p.id;

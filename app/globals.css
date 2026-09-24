@@ -52,3 +52,5 @@
   font-display: swap;
   src: url(/fonts/font-6.ttf) format('truetype');
 }
+
+.section-games .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-games .gift-image{aspect-ratio:1.55}@media(max-width:700px){.contents>div{gap:14px;flex-wrap:wrap}.section-games .gift-image{aspect-ratio:1}}@media(max-width:360px){.section-games .gift-grid{grid-template-columns:1fr}}
