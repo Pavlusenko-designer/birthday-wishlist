@@ -157,13 +157,12 @@ export const products:Product[]=[
 },
 {
   "id": "tea-scales",
-  "name": "Чайні терези-чахе 2 в 1",
+  "name": "Терези-чахе з ложкою",
   "subtitle": "ДЛЯ ЧАЙНИХ РИТУАЛІВ",
   "category": "gaiwan",
-  "price": 690,
-  "url": "https://prom.ua/ua/p3153910835-chajnye-vesy-chahoe.html",
-  "image": "/products/tea-scales.jpg",
-  "availabilityNote": "Передзамовлення. Відправка з 08.10.2026 — після дня народження."
+  "price": 890,
+  "url": "https://homecoffee.com.ua/p2783232286-vesy-chahe-dlya.html",
+  "image": "/products/tea-scales-homecoffee.jpg"
 },
 {
   "id": "kharkiv-lamp",
@@ -175,4 +174,4 @@ export const products:Product[]=[
   "image": "/products/kharkiv-lamp.jpg"
 }
 ];
-export const groupKey=(p:Product)=>onePerGroup&&((p.category==="gaiwan"&&p.id.startsWith("gaiwan-"))||p.category==="tea")?p.category:p.id;
+export const groupKey=(p:Product)=>onePerGroup&&p.category==="gaiwan"&&p.id.startsWith("gaiwan-")?p.category:p.id;

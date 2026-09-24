@@ -50,7 +50,7 @@ export async function GET(request: Request) {
     const token = existing || secret();
     const owner = await hash(token);
     const result = await database().prepare('SELECT group_key,item_id,owner_hash FROM reservations').all<{ group_key: string; item_id: string; owner_hash: string }>();
-    const response = json(request, { reservations: result.results.map(row => ({ groupKey: row.group_key, itemId: row.item_id, mine: row.owner_hash === owner })) });
+    const response = json(request, { reservations: result.results.map(row => ({ groupKey: row.group_key === 'tea' ? row.item_id : row.group_key, itemId: row.item_id, mine: row.owner_hash === owner })) });
     if (!existing && !isCrossOrigin) response.headers.set('Set-Cookie', `${cookieName}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=31536000${new URL(request.url).protocol === 'https:' ? '; Secure' : ''}`);
     return response;
   } catch (error) { console.error('reservation load', error); return json(request, { error: 'Не вдалося завантажити бронювання. Спробуйте ще раз.' }, 503); }
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
   if (!product) return json(request, { error: 'Такого подарунка немає у списку.' }, 400);
   try {
     const cancelToken = secret();
-    const result = await database().prepare('INSERT INTO reservations (group_key,item_id,owner_hash,cancel_hash,created_at) VALUES (?,?,?,?,?) ON CONFLICT(group_key) DO NOTHING').bind(groupKey(product), product.id, await hash(token), await hash(cancelToken), new Date().toISOString()).run();
+    const result = await database().prepare('INSERT INTO reservations (group_key,item_id,owner_hash,cancel_hash,created_at) VALUES (?,?,?,?,?) ON CONFLICT DO NOTHING').bind(groupKey(product), product.id, await hash(token), await hash(cancelToken), new Date().toISOString()).run();
     if (!result.meta.changes) return json(request, { error: 'Цей подарунок або інший варіант із цієї групи вже забронювали. Оберіть інший.' }, 409);
     return json(request, { ok: true, itemId: product.id, cancelToken }, 201);
   } catch (error) { console.error('reservation save', error); return json(request, { error: 'Не вдалося підтвердити бронювання. Оновіть список перед повторною спробою.' }, 503); }
@@ -80,7 +80,7 @@ export async function DELETE(request: Request) {
   const recovery = typeof body.cancelToken === 'string' && tokenPattern.test(body.cancelToken) ? body.cancelToken : '';
   if (!owner && !recovery) return json(request, { error: 'Відкрийте сторінку в браузері, де зробили бронювання, або скористайтеся особистим посиланням.' }, 403);
   try {
-    const result = await database().prepare('DELETE FROM reservations WHERE group_key=? AND item_id=? AND (owner_hash=? OR cancel_hash=?)').bind(groupKey(product), product.id, owner ? await hash(owner) : '', recovery ? await hash(recovery) : '').run();
+    const result = await database().prepare('DELETE FROM reservations WHERE item_id=? AND (owner_hash=? OR cancel_hash=?)').bind(product.id, owner ? await hash(owner) : '', recovery ? await hash(recovery) : '').run();
     if (!result.meta.changes) return json(request, { error: 'Бронювання вже скасоване або належить іншій людині.' }, 403);
     return json(request, { ok: true });
   } catch (error) { console.error('reservation cancel', error); return json(request, { error: 'Не вдалося скасувати бронювання. Спробуйте ще раз.' }, 503); }
